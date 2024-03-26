@@ -6,7 +6,7 @@
             <field name="name">Company Profile</field>
             <field name="model">company.profile</field>
             <field name="arch" type="xml">
-                <form create="0" >
+                <form create="False">
                     <sheet>
                         <field name="company_logo" widget="image" class="oe_avatar"/>
                         <group string="Company Profile">
@@ -28,11 +28,24 @@
         </record>
 
 
+        <record model="ir.ui.view" id="company_profile_tree">
+            <field name="name">Company Profile</field>
+            <field name="model">company.profile</field>
+            <field name="arch" type="xml">
+                <tree create="False">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="contact"/>
+                    <field name="address"/>
+                </tree>
+            </field>
+        </record>
+
         <!-- actions opening views on models -->
         <record model="ir.actions.act_window" id="company_profile_action_window">
             <field name="name">Company Profile</field>
             <field name="res_model">company.profile</field>
-            <field name="view_mode">form</field>
+            <field name="view_mode">tree,form</field>
         </record>
 
 

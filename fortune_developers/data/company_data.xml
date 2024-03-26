@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1" >
+        <record id="company_data" model="company.profile">
+            <field name="name">Indented Code</field>
+            <field name="email">jamtayyab1@gmail.com</field>
+            <field name="contact">+923045425910</field>
+            <field name="address">Zahoor Elahi Rd, Gulberg III, Lahore, Punjab 54600</field>
+        </record>
+    </data>
+</odoo>

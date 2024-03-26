@@ -24,6 +24,8 @@
         <field name="res_model">installment.report.wizard</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="installment_report_wizard_form"/>
+        <field name="target">new</field>
+
     </record>
 
 

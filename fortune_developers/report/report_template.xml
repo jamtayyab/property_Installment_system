@@ -3,7 +3,58 @@
 
     <template id="custom_header_footer_layout">
         <div class="header">
+            <div class="d-flex justify-content-between col-12">
+                <div class="col-6">
+                    <table>
+                        <tr>
+                            <td class="text-right float-right">
+                                <t t-esc="company_data['name']"/>
+                                <br/>
+                                <t t-esc="company_data['email']"/>
+                                <br/>
+                                <t t-esc="company_data['contact']"/>
+                                <br/>
+                                <t t-esc="company_data['address']"/>
+                                <br/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-6">
+
+                    <table class="text-end float-right">
+                        <tr>
+                            <td>
+                                <t t-esc="company_data['name']"/>
+                            </td>
+                        </tr>
+                        <tr>
+                          <td>
+                                <t t-esc="company_data['contact']"/>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <t t-esc="company_data['email']"/>
+                            </td>
+
+                        </tr>
+                        <tr>
+                           <td>
+                                <t t-esc="company_data['address']"/>
+                            </td>
+
+
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
             <h1>Test Header</h1>
+            <t t-esc="name"/>
         </div>
         <div class="article o_report_layout_standard">
             <t t-out="0"/>
@@ -20,9 +71,21 @@
         <t t-call="web.html_container">
             <t t-call="fortune_developers.custom_header_footer_layout">
                 <div class="page">
+                    <table>
+                        <tr>
+                            <td>Patient</td>
+                            <td>:</td>
+                            <td>
+<!--                                <t t-esc="data['booking_ids'][1]"/>-->
+<!--                                <t t-esc="name"/>-->
+                            </td>
+                        </tr>
+                    </table>
                     <h1>Pakistan</h1>
                 </div>
             </t>
+
         </t>
+
     </template>
 </odoo>
