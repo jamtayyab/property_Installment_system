@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+
+
+        <!-- Top menu item -->
+        <menuitem name="Real State" id="fortune_developers.menu_root"
+                  web_icon="fortune_developers,static/description/icon.png"/>
+
+        <!-- menu categories -->
+        <menuitem name="Property Operation" id="fortune_developers_property_management"
+                  parent="fortune_developers.menu_root" sequence="1"/>
+
+        <menuitem name="Reporting" id="fortune_developers_reporting" parent="fortune_developers.menu_root"
+                  sequence="2"/>
+
+        <menuitem name="Configurations" id="fortune_developers_configurations" parent="fortune_developers.menu_root"
+                  sequence="3"/>
+
+
+    </data>
+</odoo>

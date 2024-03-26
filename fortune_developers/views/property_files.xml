@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="property_files_list">
+            <field name="name">Property Files list</field>
+            <field name="model">property.files</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="property_number"/>
+                    <field name="project"/>
+                    <field name="phase"/>
+                    <field name="floor"/>
+                    <field name="property_marla"/>
+                    <field name="customer"/>
+                    <field name="dealer"/>
+                    <field name="property_type"/>
+                    <field name="cash_price"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- explicit form view definition -->
+        <record model="ir.ui.view" id="property_files_form">
+            <field name="name">Property Files Form</field>
+            <field name="model">property.files</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group string="Create New Property File">
+                        <group>
+                            <field name="name"/>
+                            <field name="property_number"/>
+                            <field name="project"/>
+                            <field name="phase"/>
+                        </group>
+                        <group>
+                            <field name="floor"/>
+                            <field name="property_marla"/>
+                            <field name="property_type"/>
+                            <field name="cash_price"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name='activity_ids'/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="property_files_action_window">
+            <field name="name">Property Files Window</field>
+            <field name="res_model">property.files</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+        <!-- actions -->
+
+
+        <menuitem name="Property Files" id="property_management_property_files"
+                  parent="fortune_developers_property_management"
+                  action="property_files_action_window" sequence="2"/>
+
+    </data>
+</odoo>

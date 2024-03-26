@@ -1,0 +1,78 @@
+<odoo>
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="payment_template_list">
+        <field name="name">Payment Template list</field>
+        <field name="model">payment.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="months"/>
+                <field name="down_payment" widget="percentage"/>
+                <field name="digging_payment" widget="percentage"/>
+                <field name="biannual_payment" widget="percentage"/>
+                <field name="monthly_payment" widget="percentage"/>
+                <field name="possession_payment" widget="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- explicit form view definition -->
+    <record model="ir.ui.view" id="payment_template_form">
+        <field name="name">Payment Template Form</field>
+        <field name="model">payment.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="New Payment Template">
+
+                        <group>
+                            <field name="name" readonly="payment_temple_line_ids"/>
+                            <field name="months" readonly="payment_temple_line_ids"/>
+                        </group>
+                        <group invisible="payment_temple_line_ids">
+                            <field name="down_payment" widget="percentage"/>
+                            <field name="digging_payment" widget="percentage"/>
+                            <field name="biannual_payment" widget="percentage"/>
+                            <field name="monthly_payment" widget="percentage"/>
+                            <field name="possession_payment" widget="percentage"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="payment_temple_line_ids" invisible="not payment_temple_line_ids"
+                               string="Break Down">
+                            <tree editable="bottom">
+                                <field name="payment_template_id" column_invisible='True'/>
+                                <!--                            <field name="payment_plan_id" string="Payment Plan Type"/>-->
+                                <field name="payment_plan" string="Payment Plan"/>
+                                <field name="plan_percentage" string="Percentage" sum="Total Percentages"
+                                       widget="percentage"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name='activity_ids'/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="payment_template_action_window">
+        <field name="name">Payment Template</field>
+        <field name="res_model">payment.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- actions -->
+    <menuitem name="Payment Template" id="configurations_payment_template" parent="fortune_developers_configurations"
+              action="payment_template_action_window"/>
+
+</odoo>

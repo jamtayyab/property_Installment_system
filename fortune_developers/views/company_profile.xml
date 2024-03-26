@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+
+        <!-- explicit form view definition -->
+        <record model="ir.ui.view" id="company_profile_form">
+            <field name="name">Company Profile</field>
+            <field name="model">company.profile</field>
+            <field name="arch" type="xml">
+                <form create="0" >
+                    <sheet>
+                        <field name="company_logo" widget="image" class="oe_avatar"/>
+                        <group string="Company Profile">
+                            <field name="name"/>
+                            <field name="email"/>
+                            <field name="contact"/>
+                        </group>
+                        <group string="Company Address">
+                            <field name="address"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name='activity_ids'/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="company_profile_action_window">
+            <field name="name">Company Profile</field>
+            <field name="res_model">company.profile</field>
+            <field name="view_mode">form</field>
+        </record>
+
+
+        <!-- actions -->
+        <menuitem name="Company Profile" id="company_profile" parent="fortune_developers_configurations"
+                  action="company_profile_action_window"/>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+       <!-- actions opening views on models -->
+    <record model="ir.actions.report" id="installment_action_report">
+        <field name="name">Report</field>
+        <field name="model">installment.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">fortune_developers.report_template</field>
+        <field name="report_file">fortune_developers.report_template</field>
+        <field name="binding_model_id" ref="model_installment_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

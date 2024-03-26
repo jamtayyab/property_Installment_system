@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="property_type_list">
+            <field name="name">Property Type list</field>
+            <field name="model">property.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="short_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- explicit form view definition -->
+        <record model="ir.ui.view" id="property_type_form">
+            <field name="name">Property Type Form</field>
+            <field name="model">property.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                    <group string="Create New Property Type">
+                    <field name="name"/>
+                    <field name="short_name"/>
+                    </group>
+                    </sheet>
+                     <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user" />
+                        <field name='activity_ids' />
+                        <field name="message_ids" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="property_type_action_window">
+            <field name="name">Property Type Window</field>
+            <field name="res_model">property.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+        <!-- actions -->
+        <menuitem name="Property Type" id="configurations_property_type" parent="fortune_developers_configurations"
+        action="property_type_action_window"/>
+
+    </data>
+</odoo>

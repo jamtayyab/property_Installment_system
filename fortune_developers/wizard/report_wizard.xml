@@ -1,0 +1,34 @@
+<odoo>
+    <record model="ir.ui.view" id="installment_report_wizard_form">
+        <field name="name">Report</field>
+        <field name="model">installment.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                <field name="booking_ids"/>
+                <field name="state"/>
+                </group>
+                <footer>
+                    <button string="Print Report"
+                            type="object"
+                            name="action_report"
+                            class="btn btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="installment_action_report_wizard">
+        <field name="name">Report</field>
+        <field name="res_model">installment.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="installment_report_wizard_form"/>
+    </record>
+
+
+    <!-- actions -->
+    <menuitem name="Report" id="report_menu_item" parent="fortune_developers_reporting"
+              action="installment_action_report_wizard" sequence="1"/>
+
+</odoo>

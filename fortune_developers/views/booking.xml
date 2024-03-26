@@ -1,0 +1,330 @@
+<odoo>
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="new_booking_list">
+        <field name="name">New Booking list</field>
+        <field name="model">new.booking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="booking_code"/>
+                <field name="book_date"/>
+                <field name="property_file_id"/>
+                <field name="customer_id"/>
+                <field name="dealer_id"/>
+                <field name="cash_price"/>
+                <field name="payment_template_id"/>
+                <field name="installment_start_date"/>
+                <field name="due_date"/>
+                <field name="remaining_amount"/>
+                <field name="paid_amount"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- explicit form view definition -->
+    <record model="ir.ui.view" id="new_booking_form">
+        <field name="name">New Booking Form</field>
+        <field name="model">new.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="sketchy,booked,completed"/>
+
+
+                    <button string="Start Booking" icon='fa-check-circle' name="action_set_stage" type="object"
+                            class="btn-primary" invisible="state != 'sketchy'"
+                            confirm="It feels like your data is ready!"
+                            help="Set the Sketchy stage to Booking"/>
+
+                    <button string="Installment Completed" icon='fa-thumbs-up' name="action_set_stage" type="object"
+                            class="btn-primary" invisible="state != 'booked'"
+                            confirm="It feels like your have collected all the money!"
+                            help="Set the Booking stage to Hallelujah!"/>
+
+
+                    <button string="Reset" icon='fa-undo' name="action_reset_stage" type="object"
+                            class="btn-secondary"
+                            confirm="It feels like you want to reset the record!"
+                            help="Reset the record to previous stage!"/>
+
+
+                </header>
+
+                <sheet>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h1>
+                                <field name="booking_code" nolabel="1" id="company" options="{'line_breaks': False}"
+                                       widget="text" class="text-break"
+                                       default_focus="1"/>
+                            </h1>
+                            <h5 class="d-flex">
+                                <label for="name" string="Booking ID"/>
+                                <field name="name" class="mx-2"/>
+                            </h5>
+                        </div>
+                        <div>
+                            <field name="customer_picture" widget="image" class="oe_avatar"/>
+                        </div>
+                    </div>
+                    <group>
+
+                        <group string="Booking Information">
+                            <field name="book_date" readonly="state != 'sketchy'"/>
+                            <field name="property_file_id" readonly="state != 'sketchy'"/>
+                            <field name="cash_price" readonly="state != 'sketchy'"/>
+                        </group>
+
+                        <group string="Customer &amp; Dealer Details">
+                            <field name="customer_id" readonly="state != 'sketchy'"/>
+                            <field name="dealer_id" readonly="state != 'sketchy'"/>
+                            <field name="commission" readonly="state != 'sketchy'" widget='percentage'
+                                   invisible="not property_file_id"/>
+                            <field name="dealer_commission" readonly="state != 'sketchy'" invisible="not commission"/>
+                        </group>
+
+                        <group string="Payment Structure">
+                            <field name="file_processing_fee" readonly="state != 'sketchy'"/>
+                            <field name="payment_template_id" readonly="state != 'sketchy'"/>
+                        </group>
+
+                        <group string="Installment Calendar">
+                            <field name="installment_start_date" readonly="state != 'sketchy'"/>
+                            <field name="due_date" readonly="state != 'sketchy'"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Installments">
+                            <field name="installment_line_ids" string="Break Down">
+                                <tree create="False">
+                                    <field name="currency_id" column_invisible='True' invisible="1"/>
+                                    <field name="booking_id" column_invisible='True'/>
+                                    <field name="installment_date" string="Installment Due Date"/>
+                                    <field name="payment_type" string="Payment Type"/>
+                                    <field name="installment_amount" string="Amount Due" sum="Total Amount"/>
+                                    <field name="payment_status" widget="badge" string="Status"
+                                           decoration-success="payment_status  == 'paid'"
+                                           decoration-danger="payment_status == 'unpaid'"/>
+                                    <field name="paid_amount" string="Amount Paid" sum="Total Paid"/>
+                                    <field name="indicator" string="U/D" force_save="1" readonly="True"
+                                    decoration-info="paid_amount  &gt; 'installment_amount'"
+                                    decoration-danger="paid_amount  &lt; 'installment_amount'"/>
+                                    <field name="paid_date" readonly="True"/>
+                                    <button name="action_paid"
+                                            string="Pay"
+                                            type="object"
+                                            icon="fa-money"
+                                            invisible="payment_status != 'unpaid'"/>
+                                </tree>
+                                <form>
+
+                                    <group string="Installment Details">
+
+
+                                        <group>
+                                            <field name="booking_id" invisible='True'/>
+                                            <field name="installment_date" readonly="booking_id.state != 'sketchy'"
+                                                   string="Installment Due Date"/>
+                                            <field name="paid_amount"
+                                                   string="Amount Paid" required="True"
+                                                   readonly="payment_status == 'paid'"/>
+                                            <field name="payment_type" readonly="True" string="Payment Type"/>
+                                            <field name="paid_date" invisible="not paid_date"
+                                                   readonly="payment_status != 'paid'"/>
+                                            <field name="receiving_note" string="Receiving Note"
+                                                   readonly="payment_status == 'paid'" required="True"/>
+
+                                            <field name="upload_attachment" filename="file_name"
+                                                   readonly="upload_attachment"/>
+                                            <field name="file_name" invisible="1"/>
+                                        </group>
+
+                                        <group>
+                                            <field name="payment_mode" string="Payment Mode"
+                                                   readonly="payment_status == 'paid'"/>
+                                            <field name="challan_number" string="Challan Number"
+                                                   readonly="payment_status == 'paid'" required="True"/>
+                                            <field name="installment_amount" readonly="booking_id.state != 'sketchy'"
+                                                   string="Amount Due"/>
+                                            <field name="payment_status" readonly="booking_id.state != 'sketchy'"
+                                                   string="Status"/>
+                                        </group>
+                                        <field name="message" nolabel="1" readonly="True" invisible="not paid_amount"
+                                               decoration-danger="paid_amount  != installment_amount"/>
+
+
+                                    </group>
+                                </form>
+
+                            </field>
+
+                            <group col="12" class="oe_invoice_lines_tab">
+                                <group colspan="8">
+                                </group>
+                                <group colspan="4">
+                                    <group class="oe_subtotal_footer">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="paid_amount" colspan="2"/>
+                                        <field name="remaining_amount"/>
+
+                                    </group>
+                                </group>
+                            </group>
+
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name='activity_ids'/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <record id="booking_view_kanban" model="ir.ui.view">
+        <field name="name">booking.view.kanban</field>
+        <field name="model">new.booking</field>
+        <field name="arch" type="xml">
+            <kanban default_order="state" default_group_by="state" quick_create="false" records_draggable="false">
+                <field name="name"/>
+                <field name="booking_code"/>
+                <field name="book_date"/>
+                <field name="property_file_id"/>
+                <field name="customer_id"/>
+                <field name="dealer_id"/>
+                <field name="cash_price"/>
+                <field name="payment_template_id"/>
+                <field name="installment_start_date"/>
+                <field name="due_date"/>
+                <field name="remaining_amount"/>
+                <field name="paid_amount"/>
+                <field name="customer_picture"/>
+                <field name="state"/>
+                <progressbar field="state" colors='{"sketchy": "info", "booked": "warning", "completed": "success"}'
+                             sum_field="cash_price"/>
+
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <!--                            Picture Code-->
+                            <div class="o_kanban_image">
+                                <img title="Picture"
+                                     t-att-src="kanban_image('new.booking', 'customer_picture', record.id.raw_value)"
+                                     alt='Customer' class="o_image_64_max"/>
+                            </div>
+
+                            <div class="oe_kanban_details">
+                                <div class="oe_kanban_card_header">
+                                    <div class="oe_kanban_card_title">
+                                        <span class="float-end badge rounded-pill text-bg-success">
+                                            <field name="booking_code"/>
+                                        </span>
+                                    </div>
+
+                                    <ul>
+                                        <li t-if="record.customer_id.raw_value" class="o_force_ltr">
+                                            <i class="fa fa-fw me-2 fa-user  text-primary " title="Customer"/>
+                                            <b>
+                                                <field name="customer_id"/>
+                                            </b>
+                                        </li>
+
+                                        <li t-if="record.property_file_id.raw_value" class="o_force_ltr">
+                                            <i class="fa fa-fw me-2 fa-phone text-primary" title="File"/>
+                                            <field name="property_file_id"/>
+                                        </li>
+
+                                        <li t-if="record.cash_price.raw_value" class="o_force_ltr">
+                                            <i class="fa fa-fw me-2 fa-envelope text-primary" title="Cost"/>
+                                            <field name="cash_price"/>
+                                            <span>PKR</span>
+                                        </li>
+
+                                        <li t-if="record.payment_template_id.raw_value" class="o_force_ltr">
+                                            <i class=" fa fa-fw me-2 fa-calendar text-primary"
+                                               title="Payment Template"/>
+                                            <field name="payment_template_id" optional="hide"/>
+                                        </li>
+
+                                        <li t-if="record.book_date.raw_value" class="o_force_ltr">
+                                            <i class=" fa fa-fw me-2 fa-money text-primary" title="Booking Date"/>
+                                            <field name="book_date" optional="hide"/>
+
+                                        </li>
+
+                                        <li t-if="record.dealer_id.raw_value" class="o_force_ltr">
+                                            <i class=" fa fa-fw me-2 fa-university text-primary"
+                                               title="Dealer"/>
+                                            <field name="dealer_id"
+                                                   optional="hide"/>
+                                        </li>
+
+
+                                    </ul>
+
+                                </div>
+
+
+                                <!--                                <div class="oe_kanban_card_body">-->
+                                <!--                                    <div>-->
+                                <!--                                        <t t-if="record.cnic_front.raw_value">-->
+                                <!--                                            <span class="float-end fa fa-check-circle mx-2 "-->
+                                <!--                                                  t-att-style="'color:#00c16e'" title="ID Card Attached"/>-->
+                                <!--                                        </t>-->
+
+                                <!--                                        <t t-if="record.agreement_doc.raw_value">-->
+                                <!--                                            <span class="float-end fa fa-certificate mx-2"-->
+                                <!--                                                  t-att-style="'color:#ff9900'" title="Agreement Attached"/>-->
+                                <!--                                        </t>-->
+
+                                <!--                                        <t t-if="record.electric_meter.raw_value">-->
+                                <!--                                            <span class="float-end fa fa-bolt mx-2" t-att-style="'color:#6639b7'"-->
+                                <!--                                                  title="Electricity Meter"/>-->
+                                <!--                                        </t>-->
+                                <!--                                        <t t-if="record.water_meter.raw_value">-->
+                                <!--                                            <span t-if="record.water_meter.raw_value" t-att-style="'color:#037ef3'"-->
+                                <!--                                                  class="float-end fa fa-tint mx-2" title="Gas Meter"/>-->
+                                <!--                                        </t>-->
+                                <!--                                        <t t-if="record.gas_meter.raw_value">-->
+                                <!--                                            <span t-if="record.gas_meter.raw_value" t-att-style="'color:#ff4c4c'"-->
+                                <!--                                                  class="float-end fa fa-fire mx-2" title="Water Meter"/>-->
+                                <!--                                        </t>-->
+
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="new_booking_action_window">
+        <field name="name">New Booking</field>
+        <field name="res_model">new.booking</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <!-- actions -->
+    <menuitem name="New Booking" id="operation_new_booking" parent="fortune_developers_property_management"
+              action="new_booking_action_window" sequence="1"/>
+
+<!--    &lt;!&ndash; actions &ndash;&gt;-->
+<!--    <menuitem name="Report" id="configurations_floors" parent="fortune_developers_reporting"-->
+<!--              action="new_floor_action_window"/>-->
+
+
+</odoo>
