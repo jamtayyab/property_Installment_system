@@ -19,16 +19,17 @@ class Payment_Temp(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        for val in vals:
-            if round(sum([vals['down_payment'], vals['digging_payment'] , vals['biannual_payment'] , vals['monthly_payment'] , vals['possession_payment']]), 2) != 1.0:
-                raise UserError('Total percentage should be equal to 100%')
-            else:
-                vals['payment_temple_line_ids'] = [(5, 0, 0)]
-                vals['payment_temple_line_ids'] = [(0, 0, {'payment_plan': 'Down Payment', 'plan_percentage': vals['down_payment']})]
-                vals['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'On Digging', 'plan_percentage': vals['digging_payment']})]
-                vals['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'Bi Annually', 'plan_percentage': vals['biannual_payment']})]
-                vals['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'Monthly Installments', 'plan_percentage': vals['monthly_payment']})]
-                vals['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'On Possession', 'plan_percentage': vals['possession_payment']})]
+        if round(sum([vals[0]['down_payment'], vals[0]['digging_payment'], vals[0]['biannual_payment'], vals[0]['monthly_payment'], vals[0]['possession_payment']]), 2) != 1.0:
+            raise UserError('Total percentage should be equal to 100%')
+        else:
+            print(vals)
+            vals[0]['payment_temple_line_ids'] = [(5, 0, 0)]
+            vals[0]['payment_temple_line_ids'] = [(0, 0, {'payment_plan': 'Down Payment', 'plan_percentage': vals[0]['down_payment']})]
+            vals[0]['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'On Digging', 'plan_percentage': vals[0]['digging_payment']})]
+            vals[0]['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'Bi Annually', 'plan_percentage': vals[0]['biannual_payment']})]
+            vals[0]['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'Monthly Installments', 'plan_percentage': vals[0]['monthly_payment']})]
+            vals[0]['payment_temple_line_ids'] += [(0, 0, {'payment_plan': 'On Possession', 'plan_percentage': vals[0]['possession_payment']})]
+            print(vals)
         return super().create(vals)
 
 class Payment_Temp_Line(models.Model):

@@ -79,15 +79,16 @@ class Booking(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        for val in vals:
-            while True:
-                # will check it later
-                booking_id = str(uuid.uuid4())[:6].upper()
-                existing_booking = self.env['new.booking'].search([('name', '=', booking_id)])
-                if not existing_booking:
-                    break
-            vals['name'] = booking_id
-            vals['booking_code'] = self.env['ir.sequence'].next_by_code('booking.sequence')
+        print(vals)
+        while True:
+            # will check it later
+            booking_id = str(uuid.uuid4())[:6].upper()
+            existing_booking = self.env['new.booking'].search([('name', '=', booking_id)])
+            if not existing_booking:
+                break
+        print(vals)
+        vals[0]['name'] = booking_id
+        vals[0]['booking_code'] = self.env['ir.sequence'].next_by_code('booking.sequence')
         return super().create(vals)
 
     @api.onchange('due_date')
